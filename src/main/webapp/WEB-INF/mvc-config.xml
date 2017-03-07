@@ -10,7 +10,7 @@
          <context:component-scan
             base-package="org.springframework.samples.web"/>  -->
 	<context:component-scan base-package="com.s7soft.web.news.controller" />
-
+	<context:component-scan base-package="com.s7soft.web.news" />
     <mvc:annotation-driven />
 
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -19,4 +19,25 @@
 	        <property name="suffix" value=".jsp"/>
 	</bean>
 
+	<!-- DataSource -->
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost/test" />
+        <property name="username" value="test" />
+        <property name="password" value="0000" />
+    </bean>
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.s7soft.web.news.mapper" />
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+    </bean>
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.s7soft.web.news.mapper" />
+    </bean>
+    <bean id="transactionManager"
+        class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
 </beans>
